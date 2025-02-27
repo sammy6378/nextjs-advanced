@@ -2,6 +2,9 @@
 
 import { useFormik } from 'formik';
 import { formSchema } from '@/components/schemas/formSchema';
+import { useRouter } from 'next/navigation';
+import {toast} from 'sonner'
+import { useAuthRegisterMutation } from '@/components/services/authService';
 import '../../globals.css';
 
 interface FormValues {
@@ -10,11 +13,25 @@ interface FormValues {
   password: string;
 }
 
-const onSubmit = (values: FormValues) => {
-  console.log('Form Submitted', values);
-};
 
 function Register() {
+
+  const router = useRouter();
+
+  const [registerUser] = useAuthRegisterMutation();
+
+  const onSubmit =async (values: FormValues) => {
+    try {
+      await registerUser(values).unwrap();
+      toast.success('Registration successful!');
+      router.push('/auth/login');  
+    } catch (error) {
+      console.error("Registration failed",error);
+    }
+  };
+
+
+
   const { values, handleBlur, errors, touched, handleChange, handleSubmit } = useFormik({
     initialValues: { username: '', email: '', password: ''},
     validationSchema: formSchema,
