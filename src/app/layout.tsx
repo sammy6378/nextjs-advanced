@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "./themes/themeContext";
 import Sidebar from "@/components/Sidebar";
+import StoreProvider from "./storeProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -29,6 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="h-full overflow-hidden">
       <body className={`${poppins.variable} ${josefin.variable} antialiased h-full overflow-hidden`}>
+        <StoreProvider>
         <ThemeProvider>
           <Navbar />
           <div className="grid grid-cols-12 h-screen">
@@ -48,6 +50,7 @@ export default function RootLayout({
             </aside>
           </div>
         </ThemeProvider>
+        </StoreProvider>
       </body>
     </html>
   );
